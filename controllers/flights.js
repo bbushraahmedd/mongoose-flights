@@ -3,7 +3,8 @@ const Flight = require('../models/flight');
 module.exports = {
     new: newFlight,
     create,
-    index
+    index,
+    show
 }
 
 function newFlight(req, res){
@@ -13,7 +14,7 @@ function newFlight(req, res){
 
 function create(req, res) {
     // convert onTime's checkbox to boolean
-    req.body.nowShowing = !!req.body.nowShowing;
+    req.body.onTime = !!req.body.onTime;
     // split if it's not an empty string
     if (req.body.cast) req.body.cast = req.body.cast.split(',');
     const flight = new Flight(req.body);
@@ -34,3 +35,9 @@ function index(req, res){
     });
     
 }
+
+function show(req, res) {
+    Flight.findById(req.params.id, function(err, flight) {
+      res.render('flights/show', { airline: 'Flight Detail', flight });
+    });
+  }
