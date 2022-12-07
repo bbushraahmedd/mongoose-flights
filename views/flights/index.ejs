@@ -10,30 +10,23 @@
   <title>Mongoose Flights</title>
 </head>
 <body>
-  <h1>Flight List</h1>
+  <h1>All Flights</h1>
   <table>
     <thead>
       <tr>
-        <th>Airport</th>
+        <th>Airline</th>
         <th>Flight Number</th>
-        <th>Airport</th>
-        <th>Departure</th>
-        <th>On Time</th>
       </tr>
     </thead>
     <tbody>
-      <!-- Write the line of EJS to iterate over movies using forEach -->
+      <!-- Write the line of EJS to iterate over flights using forEach -->
       <% flights.forEach(f => { %>
         <tr>
             <td><%= f.airline %></td>
             <td><%= f.flightNo %></td>
-            <td><%= f.airport %></td>
-            <td><%= f.departs %></td> 
-            <!-- finish the ternary expression to display
-                         'Yes' or 'Nope' --> 
-            <td><%= f.onTime ?  'On Time' : 'Delayed'%></td>
+            <td> <a href="/flights/<%= f._id %>">Details</a></td>
           </tr>
-      <% }) %>
+      <% }); %>
         
       <!-- Close the forEach using EJS here -->
     </tbody>
