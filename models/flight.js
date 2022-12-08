@@ -29,7 +29,7 @@ const flightSchema = new Schema({
     default: new Date().setFullYear(new Date().getFullYear() + 1),
   },
   onTime: Boolean,
-  destinations: [destinationSchema],
+  destinations: [destinationSchema]
 });
 
 // flights Collection if u look in mongoDB after putting something in it
