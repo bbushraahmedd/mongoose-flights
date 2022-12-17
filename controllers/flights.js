@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket')
 
 module.exports = {
     new: newFlight,
@@ -8,23 +9,20 @@ module.exports = {
 }
 
 function newFlight(req, res){
-    res.render('flights/new');
+    const newFlight = new Flight ();
+    res.render('flights/new', {defaultDeparture: newFlight.departs});
 }
 
-
 function create(req, res) {
-    // convert onTime's checkbox to boolean
-    req.body.onTime = !!req.body.onTime;
-    // split if it's not an empty string
-    if (req.body.cast) req.body.cast = req.body.cast.split(',');
-    const flight = new Flight(req.body);
-     flight.save(function(err) {
-    // one way to handle errors
-    if (err) return res.render('flights/new');
-    console.log(flight);
-    // for now, redirect right back to new.ejs
-    res.redirect('/flights/new');
-    });
+
+    Flight.create(req.body, function(err, flightDoc){
+        if (err) {
+            console.log(err)
+            return res.send('theres an error')};
+    console.log(flightDoc);
+    
+    res.redirect('/');
+    }); //end of callback func
 }
 
 function index(req, res){
@@ -37,7 +35,15 @@ function index(req, res){
 }
 
 function show(req, res) {
-    Flight.findById(req.params.id, function(err, flight) {
-      res.render('flights/show', { airline: 'Flight Detail', flight });
+    Flight.findById(req.params.id, function(err, flightDoc) {
+        Ticket.find({flight: flightDoc._id}, function(err, ticketDocs){
+
+
+            console.log(req.body, '<<<<<<<<<<THIS IS REQ.BODY')
+            console.log(flightDoc, '-----------THIS IS THE FLIGHTDOC')
+            console.log(ticketDocs, '~~~~~~~THIS IS TICKETDOCS')
+
+            res.render('flights/show', { airline: 'Flight Detail', flight: flightDoc, ticket: ticketDocs });
+        });
     });
   }
